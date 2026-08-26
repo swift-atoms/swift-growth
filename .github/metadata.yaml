@@ -1,7 +1,7 @@
 # .github/metadata.yaml
 description: "Pluggable capacity-growth strategies for owned, resizable regions and buffers."
 topics:
-  - primitives
+  - molecules
   - growth
   - buffer
 homepage: "https://swift-institute.org"

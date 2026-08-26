@@ -1,6 +1,6 @@
-public import Affine_Primitives
-public import Index_Primitives
-public import Memory_Alignment_Primitives
+public import Affine
+public import Index
+public import Memory_Alignment
 
 extension Growth {
 

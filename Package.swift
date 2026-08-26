@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-growth-primitives",
+    name: "swift-growth",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -13,55 +13,55 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Growth Primitives",
-            targets: ["Growth Primitives"]
+            name: "Growth",
+            targets: ["Growth"]
         ),
         .library(
-            name: "Growth Primitives Test Support",
-            targets: ["Growth Primitives Test Support"]
+            name: "Growth Test Support",
+            targets: ["Growth Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-index-primitives.git",
+            url: "https://github.com/swift-molecules/swift-index.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-affine-primitives.git",
+            url: "https://github.com/swift-molecules/swift-affine.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-memory-primitives.git",
+            url: "https://github.com/swift-molecules/swift-memory.git",
             branch: "main"
         ),
     ],
     targets: [
         .target(
-            name: "Growth Primitives",
+            name: "Growth",
             dependencies: [
-                .product(name: "Index Primitives", package: "swift-index-primitives"),
-                .product(name: "Affine Primitives", package: "swift-affine-primitives"),
-                .product(name: "Memory Alignment Primitives", package: "swift-memory-primitives"),
+                .product(name: "Index", package: "swift-index"),
+                .product(name: "Affine", package: "swift-affine"),
+                .product(name: "Memory Alignment", package: "swift-memory"),
                 .product(
-                    name: "Memory Primitives Standard Library Integration",
-                    package: "swift-memory-primitives"
+                    name: "Memory Standard Library Integration",
+                    package: "swift-memory"
                 ),
             ]
         ),
         .target(
-            name: "Growth Primitives Test Support",
+            name: "Growth Test Support",
             dependencies: [
-                "Growth Primitives",
-                .product(name: "Index Primitives Test Support", package: "swift-index-primitives"),
+                "Growth",
+                .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
         ),
         .testTarget(
-            name: "Growth Primitives Tests",
+            name: "Growth Tests",
             dependencies: [
-                "Growth Primitives",
-                "Growth Primitives Test Support",
-                .product(name: "Memory Alignment Primitives", package: "swift-memory-primitives"),
+                "Growth",
+                "Growth Test Support",
+                .product(name: "Memory Alignment", package: "swift-memory"),
             ]
         ),
     ],
