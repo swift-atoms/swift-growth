@@ -2,13 +2,13 @@
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
-Pluggable capacity-growth strategies for owned, resizable regions and buffers — a `Growth` namespace of growth policies (doubling, exact, factor, page-aligned) and a `Growth.Growable` marker for leaves whose backing can grow.
+Pluggable capacity-growth strategies for owned, resizable regions and buffers — a `Growth` namespace with doubling and exact policies, plus a `Growth.Growable` marker for leaves whose backing can grow.
 
 ---
 
 ## Quick Start
 
-A resizable buffer that runs out of room consults a `Growth.Policy` to decide how large its backing should become. The policy is the *strategy*; the buffer is the *mechanism*. Capacities are typed as `Index<Element>.Count`, re-exported from `Index`, so the count carries its element type in the signature.
+A resizable buffer that runs out of room consults a `Growth.Policy` to decide how large its backing should become. The policy is the *strategy*; the buffer is the *mechanism*. Capacities use `Cardinal`, the Institute atom for nonnegative counts.
 
 ```swift
 import Growth
@@ -16,11 +16,11 @@ import Growth
 // Doubling gives amortized O(1) appends: each growth doubles the capacity.
 let policy = Growth.Policy<UInt8>.doubling
 
-let current: Index<UInt8>.Count = 4
-let next = policy.newCapacity(from: current)   // 8 — doubled
+let current = Cardinal(4)
+let next = policy.capacity(from: current)   // 8 — doubled
 
 // At zero capacity, doubling floors at one element.
-let firstGrowth = policy.newCapacity(from: 0)  // 1
+let firstGrowth = policy.capacity(from: Cardinal(0))  // 1
 ```
 
 Each leaf picks the strategy that fits its access pattern:
@@ -29,21 +29,10 @@ Each leaf picks the strategy that fits its access pattern:
 import Growth
 
 // Exact: grow to precisely what was requested, with no slack.
-Growth.Policy<UInt8>.exact.newCapacity(from: 16)        // 16
+Growth.Policy<UInt8>.exact.capacity(from: Cardinal(16))        // 16
 
 // Doubling: trade memory for amortized-constant growth.
-Growth.Policy<UInt8>.doubling.newCapacity(from: 16)     // 32
-```
-
-`pageAligned` rounds the new capacity up to an alignment boundary, drawing `Memory.Alignment` from `Memory Alignment`:
-
-```swift
-import Growth
-import Memory_Alignment
-
-let policy = try Growth.Policy<UInt8>.pageAligned(Memory.Alignment(16))
-policy.newCapacity(from: 17)   // 32 — next multiple of 16
-policy.newCapacity(from: 0)    // 16 — zero rounds up to one, then to 16
+Growth.Policy<UInt8>.doubling.capacity(from: Cardinal(16))     // 32
 ```
 
 A growable leaf composes both halves: it conforms `Growth.Growable` (it *can* grow) and holds a `Growth.Policy` (it knows *how fast*). The marker is signalled by conformance presence alone, so a fixed or bounded leaf is simply one that does not conform `Growth.Growable`.
@@ -54,7 +43,7 @@ A growable leaf composes both halves: it conforms `Growth.Growable` (it *can* gr
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-molecules/swift-growth.git", branch: "main")
+    .package(url: "https://github.com/swift-atoms/swift-growth.git", branch: "main")
 ]
 ```
 
@@ -67,20 +56,21 @@ dependencies: [
 )
 ```
 
-Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 (or the matching Linux / Windows toolchain).
+Requires Swift 6.4 and macOS 27 / iOS 27 / tvOS 27 / watchOS 27 / visionOS 27 (or the matching Linux / Windows toolchain).
 
 ---
 
 ## Architecture
 
-Two library products. Depends only on `Index`, `Affine`, and `Memory.Alignment`.
+Three library products. The core depends only on `Cardinal`.
 
 | Product | Target | Purpose |
 |---------|--------|---------|
-| `Growth` | `Sources/Growth/` | The `Growth` namespace: `Growth.Policy<Element>` with the `doubling`, `exact`, `factor`, and `pageAligned` strategies, plus the `Growth.Growable` marker protocol. Re-exports `Index`. |
+| `Growth` | `Sources/Growth/` | The `Growth` namespace: `Growth.Policy<Element>` with `doubling` and `exact` strategies, plus the `Growth.Growable` marker protocol. Re-exports `Cardinal`. |
+| `Growth Apple Foundation Integration` | `Sources/Growth Apple Foundation Integration/` | Re-exports `Growth` and Foundation for Apple-platform consumers. |
 | `Growth Test Support` | `Tests/Support/` | Re-exports the main target for test consumers. |
 
-Foundation-free.
+The core and test-support targets are Foundation-free. Foundation is confined to the Apple Foundation integration target.
 
 ---
 
@@ -88,7 +78,7 @@ Foundation-free.
 
 | Platform | Status |
 |----------|--------|
-| macOS 26 | Full support |
+| macOS 27 | Full support |
 | Linux | Full support |
 | Windows | Full support |
 | iOS / tvOS / watchOS / visionOS | Supported |

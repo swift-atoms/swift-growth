@@ -17,17 +17,17 @@ let package = Package(
             targets: ["Growth"]
         ),
         .library(
-            name: "Growth Standard Library Integration",
-            targets: ["Growth Standard Library Integration"]
-        ),
-        .library(
             name: "Growth Apple Foundation Integration",
             targets: ["Growth Apple Foundation Integration"]
+        ),
+        .library(
+            name: "Growth Test Support",
+            targets: ["Growth Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-atoms/swift-index.git",
+            url: "https://github.com/swift-atoms/swift-cardinal.git",
             branch: "main"
         ),
     ],
@@ -35,23 +35,24 @@ let package = Package(
         .target(
             name: "Growth",
             dependencies: [
-                .product(name: "Index", package: "swift-index")
+                .product(name: "Cardinal", package: "swift-cardinal")
             ]
-        ),
-        .target(
-            name: "Growth Standard Library Integration",
-            dependencies: ["Growth"]
         ),
         .target(
             name: "Growth Apple Foundation Integration",
-            dependencies: [
-                "Growth",
-                "Growth Standard Library Integration",
-            ]
+            dependencies: ["Growth"]
+        ),
+        .target(
+            name: "Growth Test Support",
+            dependencies: ["Growth"],
+            path: "Tests/Support"
         ),
         .testTarget(
             name: "Growth Tests",
-            dependencies: ["Growth"]
+            dependencies: [
+                "Growth",
+                "Growth Test Support",
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]

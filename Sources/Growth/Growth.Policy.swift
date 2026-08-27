@@ -1,14 +1,14 @@
-public import Index
+@_exported public import Cardinal
 
 extension Growth {
 
     public struct Policy<Element: ~Copyable>: Sendable {
         @usableFromInline
-        let _apply: @Sendable (Index<Element>.Count) -> Index<Element>.Count
+        let _apply: @Sendable (Cardinal) -> Cardinal
 
         @inlinable
         package init(
-            apply: @escaping @Sendable (Index<Element>.Count) -> Index<Element>.Count
+            apply: @escaping @Sendable (Cardinal) -> Cardinal
         ) {
             self._apply = apply
         }
@@ -18,7 +18,7 @@ extension Growth {
 extension Growth.Policy where Element: ~Copyable {
 
     @inlinable
-    public func capacity(from current: Index<Element>.Count) -> Index<Element>.Count {
+    public func capacity(from current: Cardinal) -> Cardinal {
         _apply(current)
     }
 }
@@ -27,7 +27,7 @@ extension Growth.Policy where Element: ~Copyable {
 
     @inlinable
     public static var doubling: Self {
-        Self { max($0 + $0, .one) }
+        Self { $0 == Cardinal(0) ? Cardinal(1) : $0 + $0 }
     }
 
     @inlinable
