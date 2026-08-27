@@ -27,7 +27,7 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-molecules/swift-index.git",
+            url: "https://github.com/swift-atoms/swift-index.git",
             branch: "main"
         ),
     ],
