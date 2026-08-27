@@ -20,4 +20,13 @@ extension `Growth.Policy Tests`.Unit {
         let policy = Growth.Policy<UInt8>.exact
         #expect(policy.capacity(from: Cardinal(16)) == Cardinal(16))
     }
+
+    @Test
+    func `custom delegates capacity to its strategy`() {
+        let policy = Growth.Policy<UInt8>.custom { current in
+            current + Cardinal(3)
+        }
+
+        #expect(policy.capacity(from: Cardinal(5)) == Cardinal(8))
+    }
 }

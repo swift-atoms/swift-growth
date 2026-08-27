@@ -25,6 +25,16 @@ extension Growth.Policy where Element: ~Copyable {
 
 extension Growth.Policy where Element: ~Copyable {
 
+    /// Creates a policy from a caller-owned capacity strategy.
+    ///
+    /// The strategy receives the current capacity and returns the next capacity.
+    @inlinable
+    public static func custom(
+        capacity: @escaping @Sendable (Cardinal) -> Cardinal
+    ) -> Self {
+        Self(apply: capacity)
+    }
+
     @inlinable
     public static var doubling: Self {
         Self { $0 == Cardinal(0) ? Cardinal(1) : $0 + $0 }

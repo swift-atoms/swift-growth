@@ -21,6 +21,12 @@ let next = policy.capacity(from: current)   // 8 — doubled
 
 // At zero capacity, doubling floors at one element.
 let firstGrowth = policy.capacity(from: Cardinal(0))  // 1
+
+// Integration packages can define domain-specific strategies without exposing
+// Growth.Policy's storage or initializer.
+let incrementing = Growth.Policy<UInt8>.custom { current in
+    current + Cardinal(3)
+}
 ```
 
 Each leaf picks the strategy that fits its access pattern:
@@ -66,7 +72,7 @@ Three library products. The core depends only on `Cardinal`.
 
 | Product | Target | Purpose |
 |---------|--------|---------|
-| `Growth` | `Sources/Growth/` | The `Growth` namespace: `Growth.Policy<Element>` with `doubling` and `exact` strategies, plus the `Growth.Growable` marker protocol. Re-exports `Cardinal`. |
+| `Growth` | `Sources/Growth/` | The `Growth` namespace: `Growth.Policy<Element>` with `doubling`, `exact`, and named custom strategy construction, plus the `Growth.Growable` marker protocol. Re-exports `Cardinal`. |
 | `Growth Apple Foundation Integration` | `Sources/Growth Apple Foundation Integration/` | Re-exports `Growth` and Foundation for Apple-platform consumers. |
 | `Growth Test Support` | `Tests/Support/` | Re-exports the main target for test consumers. |
 
