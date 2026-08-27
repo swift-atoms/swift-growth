@@ -1,6 +1,4 @@
-public import Affine
 public import Index
-public import Memory_Alignment
 
 extension Growth {
 
@@ -33,19 +31,7 @@ extension Growth.Policy where Element: ~Copyable {
     }
 
     @inlinable
-    public static func factor(
-        _ scale: Affine.Discrete.Ratio<Element, Element>
-    ) -> Self {
-        Self { Index<Element>.Count.max($0 * scale, .one) }
-    }
-
-    @inlinable
     public static var exact: Self {
         Self { $0 }
-    }
-
-    @inlinable
-    public static func paged(_ alignment: Memory.Alignment) -> Self {
-        Self { alignment.align.up($0 == .zero ? .one : $0) }
     }
 }

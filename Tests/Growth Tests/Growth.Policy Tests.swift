@@ -1,5 +1,5 @@
-import Growth_Test_Support
-import Memory_Alignment
+import Growth
+import Index
 import Testing
 
 @Suite struct `Growth.Policy Tests` {
@@ -20,14 +20,5 @@ extension `Growth.Policy Tests`.Unit {
     func `exact returns the request unchanged`() {
         let policy = Growth.Policy<UInt8>.exact
         #expect(policy.capacity(from: 16) == Index<UInt8>.Count(16))
-    }
-}
-
-extension `Growth.Policy Tests`.`Edge Case` {
-    @Test
-    func `pageAligned rounds up to the boundary`() throws {
-        let policy = try Growth.Policy<UInt8>.paged(Memory.Alignment(16))
-        #expect(policy.capacity(from: 17) == Index<UInt8>.Count(32))
-        #expect(policy.capacity(from: 0) == Index<UInt8>.Count(16))
     }
 }

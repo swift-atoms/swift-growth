@@ -17,8 +17,12 @@ let package = Package(
             targets: ["Growth"]
         ),
         .library(
-            name: "Growth Test Support",
-            targets: ["Growth Test Support"]
+            name: "Growth Standard Library Integration",
+            targets: ["Growth Standard Library Integration"]
+        ),
+        .library(
+            name: "Growth Apple Foundation Integration",
+            targets: ["Growth Apple Foundation Integration"]
         ),
     ],
     dependencies: [
@@ -26,43 +30,28 @@ let package = Package(
             url: "https://github.com/swift-molecules/swift-index.git",
             branch: "main"
         ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-affine.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-memory.git",
-            branch: "main"
-        ),
     ],
     targets: [
         .target(
             name: "Growth",
             dependencies: [
-                .product(name: "Index", package: "swift-index"),
-                .product(name: "Affine", package: "swift-affine"),
-                .product(name: "Memory Alignment", package: "swift-memory"),
-                .product(
-                    name: "Memory Standard Library Integration",
-                    package: "swift-memory"
-                ),
+                .product(name: "Index", package: "swift-index")
             ]
         ),
         .target(
-            name: "Growth Test Support",
+            name: "Growth Standard Library Integration",
+            dependencies: ["Growth"]
+        ),
+        .target(
+            name: "Growth Apple Foundation Integration",
             dependencies: [
                 "Growth",
-                .product(name: "Index Test Support", package: "swift-index"),
-            ],
-            path: "Tests/Support"
+                "Growth Standard Library Integration",
+            ]
         ),
         .testTarget(
             name: "Growth Tests",
-            dependencies: [
-                "Growth",
-                "Growth Test Support",
-                .product(name: "Memory Alignment", package: "swift-memory"),
-            ]
+            dependencies: ["Growth"]
         ),
     ],
     swiftLanguageModes: [.v6]
