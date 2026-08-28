@@ -1,5 +1,5 @@
-import Growth_Primitives_Test_Support
-import Memory_Alignment_Primitives
+import Growth_Test_Support
+import Memory_Alignment
 import Testing
 
 @Suite struct `Growth.Policy Tests` {
