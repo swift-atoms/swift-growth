@@ -1,4 +1,4 @@
-# Growth
+# Growth Primitives
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -8,7 +8,7 @@ Pluggable capacity-growth strategies for owned, resizable regions and buffers â€
 
 ## Quick Start
 
-A resizable buffer that runs out of room consults a `Growth.Policy` to decide how large its backing should become. The policy is the *strategy*; the buffer is the *mechanism*. Capacities are typed as `Index<Element>.Count`, re-exported from `Index`, so the count carries its element type in the signature.
+A resizable buffer that runs out of room consults a `Growth.Policy` to decide how large its backing should become. The policy is the *strategy*; the buffer is the *mechanism*. Capacities are typed as `Index<Element>.Count`, re-exported from `Index Primitives`, so the count carries its element type in the signature.
 
 ```swift
 import Growth
@@ -35,7 +35,7 @@ Growth.Policy<UInt8>.exact.newCapacity(from: 16)        // 16
 Growth.Policy<UInt8>.doubling.newCapacity(from: 16)     // 32
 ```
 
-`pageAligned` rounds the new capacity up to an alignment boundary, drawing `Memory.Alignment` from `Memory Alignment`:
+`pageAligned` rounds the new capacity up to an alignment boundary, drawing `Memory.Alignment` from `Memory Alignment Primitives`:
 
 ```swift
 import Growth
@@ -54,7 +54,7 @@ A growable leaf composes both halves: it conforms `Growth.Growable` (it *can* gr
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-molecules/swift-growth.git", branch: "main")
+    .package(url: "https://github.com/swift-atoms/swift-growth.git", branch: "main")
 ]
 ```
 
@@ -73,11 +73,11 @@ Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 
 
 ## Architecture
 
-Two library products. Depends only on `Index`, `Affine`, and `Memory.Alignment`.
+Two library products. Depends only on the `Index`, `Affine`, and `Memory.Alignment` primitives.
 
 | Product | Target | Purpose |
 |---------|--------|---------|
-| `Growth` | `Sources/Growth/` | The `Growth` namespace: `Growth.Policy<Element>` with the `doubling`, `exact`, `factor`, and `pageAligned` strategies, plus the `Growth.Growable` marker protocol. Re-exports `Index`. |
+| `Growth Primitives` | `Sources/Growth Primitives/` | The `Growth` namespace: `Growth.Policy<Element>` with the `doubling`, `exact`, `factor`, and `pageAligned` strategies, plus the `Growth.Growable` marker protocol. Re-exports `Index Primitives`. |
 | `Growth Test Support` | `Tests/Support/` | Re-exports the main target for test consumers. |
 
 Foundation-free.

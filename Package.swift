@@ -23,15 +23,15 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-molecules/swift-index.git",
+            url: "https://github.com/swift-atoms/swift-index.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-affine.git",
+            url: "https://github.com/swift-atoms/swift-affine.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-memory.git",
+            url: "https://github.com/swift-atoms/swift-memory.git",
             branch: "main"
         ),
     ],
@@ -41,7 +41,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Affine", package: "swift-affine"),
-                .product(name: "Memory Alignment", package: "swift-memory"),
+                .product(name: "Memory", package: "swift-memory"),
                 .product(
                     name: "Memory Standard Library Integration",
                     package: "swift-memory"
@@ -51,7 +51,7 @@ let package = Package(
         .target(
             name: "Growth Test Support",
             dependencies: [
-                "Growth",
+                .target(name: "Growth"),
                 .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
@@ -59,9 +59,9 @@ let package = Package(
         .testTarget(
             name: "Growth Tests",
             dependencies: [
-                "Growth",
-                "Growth Test Support",
-                .product(name: "Memory Alignment", package: "swift-memory"),
+                .target(name: "Growth"),
+                .target(name: "Growth Test Support"),
+                .product(name: "Memory", package: "swift-memory"),
             ]
         ),
     ],
