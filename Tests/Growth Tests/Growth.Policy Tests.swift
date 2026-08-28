@@ -1,4 +1,5 @@
 import Growth_Test_Support
+import Memory_Alignment
 import Testing
 
 @Suite struct `Growth.Policy Tests` {
@@ -11,22 +12,22 @@ extension `Growth.Policy Tests`.Unit {
     @Test
     func `doubling doubles and floors at one`() {
         let policy = Growth.Policy<UInt8>.doubling
-        #expect(policy.capacity(from: Cardinal(4)) == Cardinal(8))
-        #expect(policy.capacity(from: Cardinal(0)) == Cardinal(1))
+        #expect(policy.capacity(from: 4) == Index<UInt8>.Count(8))
+        #expect(policy.capacity(from: 0) == Index<UInt8>.Count(1))
     }
 
     @Test
     func `exact returns the request unchanged`() {
         let policy = Growth.Policy<UInt8>.exact
-        #expect(policy.capacity(from: Cardinal(16)) == Cardinal(16))
+        #expect(policy.capacity(from: 16) == Index<UInt8>.Count(16))
     }
+}
 
+extension `Growth.Policy Tests`.`Edge Case` {
     @Test
-    func `custom delegates capacity to its strategy`() {
-        let policy = Growth.Policy<UInt8>.custom { current in
-            current + Cardinal(3)
-        }
-
-        #expect(policy.capacity(from: Cardinal(5)) == Cardinal(8))
+    func `pageAligned rounds up to the boundary`() throws {
+        let policy = try Growth.Policy<UInt8>.paged(Memory.Alignment(16))
+        #expect(policy.capacity(from: 17) == Index<UInt8>.Count(32))
+        #expect(policy.capacity(from: 0) == Index<UInt8>.Count(16))
     }
 }

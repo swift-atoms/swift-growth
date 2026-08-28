@@ -17,17 +17,21 @@ let package = Package(
             targets: ["Growth"]
         ),
         .library(
-            name: "Growth Apple Foundation Integration",
-            targets: ["Growth Apple Foundation Integration"]
-        ),
-        .library(
             name: "Growth Test Support",
             targets: ["Growth Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-atoms/swift-cardinal.git",
+            url: "https://github.com/swift-molecules/swift-index.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-molecules/swift-affine.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-molecules/swift-memory.git",
             branch: "main"
         ),
     ],
@@ -35,16 +39,21 @@ let package = Package(
         .target(
             name: "Growth",
             dependencies: [
-                .product(name: "Cardinal", package: "swift-cardinal")
+                .product(name: "Index", package: "swift-index"),
+                .product(name: "Affine", package: "swift-affine"),
+                .product(name: "Memory Alignment", package: "swift-memory"),
+                .product(
+                    name: "Memory Standard Library Integration",
+                    package: "swift-memory"
+                ),
             ]
         ),
         .target(
-            name: "Growth Apple Foundation Integration",
-            dependencies: ["Growth"]
-        ),
-        .target(
             name: "Growth Test Support",
-            dependencies: ["Growth"],
+            dependencies: [
+                "Growth",
+                .product(name: "Index Test Support", package: "swift-index"),
+            ],
             path: "Tests/Support"
         ),
         .testTarget(
@@ -52,6 +61,7 @@ let package = Package(
             dependencies: [
                 "Growth",
                 "Growth Test Support",
+                .product(name: "Memory Alignment", package: "swift-memory"),
             ]
         ),
     ],
