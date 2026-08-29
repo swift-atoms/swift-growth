@@ -23,6 +23,10 @@ let package = Package(
     ],
     dependencies: [
         .package(
+            url: "https://github.com/swift-atoms/swift-cardinal.git",
+            branch: "main"
+        ),
+        .package(
             url: "https://github.com/swift-atoms/swift-index.git",
             branch: "main"
         ),
@@ -34,6 +38,14 @@ let package = Package(
             url: "https://github.com/swift-atoms/swift-memory.git",
             branch: "main"
         ),
+        .package(
+            url: "https://github.com/swift-atoms/swift-ordinal.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-atoms/swift-tagged.git",
+            branch: "main"
+        ),
     ],
     targets: [
         .target(
@@ -41,11 +53,18 @@ let package = Package(
             dependencies: [
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Affine", package: "swift-affine"),
+                .product(name: "Affine Discrete", package: "swift-affine"),
+                .product(name: "Affine Tagged", package: "swift-affine"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Cardinal Carrier", package: "swift-cardinal"),
+                .product(name: "Cardinal Tagged", package: "swift-cardinal"),
                 .product(name: "Memory", package: "swift-memory"),
                 .product(
                     name: "Memory Standard Library Integration",
                     package: "swift-memory"
                 ),
+                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
+                .product(name: "Tagged", package: "swift-tagged"),
             ]
         ),
         .target(
@@ -61,7 +80,9 @@ let package = Package(
             dependencies: [
                 .target(name: "Growth"),
                 .target(name: "Growth Test Support"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Memory", package: "swift-memory"),
+                .product(name: "Tagged", package: "swift-tagged"),
             ]
         ),
     ],
