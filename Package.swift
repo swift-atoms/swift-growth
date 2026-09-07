@@ -23,19 +23,7 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-atoms/swift-index.git",
-            branch: "main"
-        ),
-        .package(
             url: "https://github.com/swift-atoms/swift-ratio.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-atoms/swift-memory.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-atoms/swift-ordinal.git",
             branch: "main"
         ),
         .package(
@@ -47,11 +35,8 @@ let package = Package(
         .target(
             name: "Growth",
             dependencies: [
-                .product(name: "Index", package: "swift-index"),
                 .product(name: "Ratio", package: "swift-ratio"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Memory", package: "swift-memory"),
-                .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ],
             path: "Sources/Growth"
@@ -68,7 +53,6 @@ let package = Package(
             name: "Growth Test Support",
             dependencies: [
                 .target(name: "Growth"),
-                .product(name: "Index Test Support", package: "swift-index"),
             ],
             path: "Tests/Support"
         ),
@@ -79,7 +63,6 @@ let package = Package(
                 .target(name: "Growth"),
                 .target(name: "Growth Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Memory", package: "swift-memory"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .target(name: "Growth Foundation Integration"),
             ],

@@ -1,8 +1,5 @@
 public import Ratio
 public import Cardinal
-public import Index
-public import enum Memory.Memory
-public import Ordinal
 public import Tagged
 
 extension Growth {
@@ -11,11 +8,11 @@ extension Growth {
         public typealias Count = Tagged::Tagged<Element, Cardinal::Cardinal>
 
         @usableFromInline
-        let _apply: @Sendable (Count) -> Count
+        let _apply: @Sendable (Count) throws(Error) -> Count
 
         @inlinable
         package init(
-            apply: @escaping @Sendable (Count) -> Count
+            apply: @escaping @Sendable (Count) throws(Error) -> Count
         ) {
             self._apply = apply
         }
@@ -25,8 +22,19 @@ extension Growth {
 extension Growth.Policy where Element: ~Copyable {
 
     @inlinable
-    public func capacity(from current: Count) -> Count {
-        _apply(current)
+    public func capacity(from current: Count) throws(Error) -> Count {
+        let proposed = try _apply(current)
+        guard proposed >= current else {
+            throw .wouldShrink(current: current, proposed: proposed)
+        }
+        return proposed
+    }
+
+    @inlinable
+    public static func custom(
+        _ apply: @escaping @Sendable (Count) throws(Error) -> Count
+    ) -> Self {
+        Self(apply: apply)
     }
 }
 
@@ -34,26 +42,31 @@ extension Growth.Policy where Element: ~Copyable {
 
     @inlinable
     public static var doubling: Self {
-        Self { max($0 + $0, .one) }
+        Self { current throws(Error) in
+            do throws(Cardinal.Error) {
+                return Count.max(Count(try current.underlying.add.exact(current.underlying)), .one)
+            } catch {
+                throw .overflow
+            }
+        }
     }
 
     @inlinable
     public static func factor(
         _ scale: Ratio<Element, Element>
-    ) -> Self {
-        Self { Count.max($0 * scale, .one) }
+    ) throws(Error) -> Self {
+        guard scale.value >= .one else { throw .invalidFactor(scale) }
+        return Self { current throws(Error) in
+            do throws(Ratio<Element, Element>.Error) {
+                return Count.max(try scale.applying(to: current), .one)
+            } catch {
+                throw .scaling(error)
+            }
+        }
     }
 
     @inlinable
     public static var exact: Self {
         Self { $0 }
-    }
-
-    @inlinable
-    public static func paged(_ alignment: Memory.Alignment) -> Self {
-        Self { current in
-            let nonzero = current == .zero ? Count.one : current
-            return Count(Cardinal(alignment.alignUp(nonzero.underlying.rawValue)))
-        }
     }
 }
