@@ -13,8 +13,8 @@ let package = Package(
     ],
     products: [
         .library(name: "Growth", targets: ["Growth"]),
-        .library(name: "Growth Standard Library Integration", targets: ["Growth Standard Library Integration"]),
-        .library(name: "Growth Foundation Library Integration", targets: ["Growth Foundation Library Integration"]),
+
+        .library(name: "Growth Foundation Integration", targets: ["Growth Foundation Integration"]),
         .library(name: "Growth Test Support", targets: ["Growth Test Support"]),
     ],
     dependencies: [
@@ -51,26 +51,18 @@ let package = Package(
                 .product(name: "Ratio", package: "swift-ratio"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Memory", package: "swift-memory"),
-                .product(name: "Memory Standard Library Integration", package: "swift-memory"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ],
             path: "Sources/Growth"
         ),
+        
         .target(
-            name: "Growth Standard Library Integration",
+            name: "Growth Foundation Integration",
             dependencies: [
                 .target(name: "Growth"),
             ],
-            path: "Sources/Growth Standard Library Integration"
-        ),
-        .target(
-            name: "Growth Foundation Library Integration",
-            dependencies: [
-                .target(name: "Growth"),
-                .target(name: "Growth Standard Library Integration"),
-            ],
-            path: "Sources/Growth Foundation Library Integration"
+            path: "Sources/Growth Foundation Integration"
         ),
         .target(
             name: "Growth Test Support",
@@ -89,8 +81,7 @@ let package = Package(
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Memory", package: "swift-memory"),
                 .product(name: "Tagged", package: "swift-tagged"),
-                .target(name: "Growth Standard Library Integration"),
-                .target(name: "Growth Foundation Library Integration"),
+                .target(name: "Growth Foundation Integration"),
             ],
             path: "Tests/Growth Tests"
         ),
