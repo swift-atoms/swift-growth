@@ -12,14 +12,10 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        .library(
-            name: "Growth",
-            targets: ["Growth"]
-        ),
-        .library(
-            name: "Growth Test Support",
-            targets: ["Growth Test Support"]
-        ),
+        .library(name: "Growth", targets: ["Growth"]),
+        .library(name: "Growth Standard Library Integration", targets: ["Growth Standard Library Integration"]),
+        .library(name: "Growth Foundation Library Integration", targets: ["Growth Foundation Library Integration"]),
+        .library(name: "Growth Test Support", targets: ["Growth Test Support"]),
     ],
     dependencies: [
         .package(
@@ -55,13 +51,26 @@ let package = Package(
                 .product(name: "Ratio", package: "swift-ratio"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Memory", package: "swift-memory"),
-                .product(
-                    name: "Memory Standard Library Integration",
-                    package: "swift-memory"
-                ),
+                .product(name: "Memory Standard Library Integration", package: "swift-memory"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
-            ]
+            ],
+            path: "Sources/Growth"
+        ),
+        .target(
+            name: "Growth Standard Library Integration",
+            dependencies: [
+                .target(name: "Growth"),
+            ],
+            path: "Sources/Growth Standard Library Integration"
+        ),
+        .target(
+            name: "Growth Foundation Library Integration",
+            dependencies: [
+                .target(name: "Growth"),
+                .target(name: "Growth Standard Library Integration"),
+            ],
+            path: "Sources/Growth Foundation Library Integration"
         ),
         .target(
             name: "Growth Test Support",
@@ -80,14 +89,17 @@ let package = Package(
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Memory", package: "swift-memory"),
                 .product(name: "Tagged", package: "swift-tagged"),
-            ]
+                .target(name: "Growth Standard Library Integration"),
+                .target(name: "Growth Foundation Library Integration"),
+            ],
+            path: "Tests/Growth Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
 )
 
-for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+for target in package.targets {
+    target.swiftSettings = [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
@@ -95,11 +107,6 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
         .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
+        .enableExperimentalFeature("RawLayout"),
     ]
-
-    let package: [SwiftSetting] = [
-        .enableExperimentalFeature("RawLayout")
-    ]
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }
