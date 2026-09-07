@@ -1,12 +1,8 @@
-public import Affine
-public import Affine_Discrete
-public import Affine_Tagged
+public import Ratio
 public import Cardinal
-public import Cardinal_Carrier
-public import Cardinal_Tagged
 public import Index
 public import enum Memory.Memory
-public import Ordinal_Protocol
+public import Ordinal
 public import Tagged
 
 extension Growth {
@@ -43,7 +39,7 @@ extension Growth.Policy where Element: ~Copyable {
 
     @inlinable
     public static func factor(
-        _ scale: Affine.Discrete.Ratio<Element, Element>
+        _ scale: Ratio<Element, Element>
     ) -> Self {
         Self { Count.max($0 * scale, .one) }
     }

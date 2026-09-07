@@ -1,3 +1,4 @@
+import Ratio
 import Cardinal
 import Growth_Test_Support
 import enum Memory.Memory
@@ -46,5 +47,14 @@ extension `Growth.Policy Tests`.`Edge Case` {
             policy.capacity(from: Growth.Policy<UInt8>.Count(Cardinal(0)))
                 == Growth.Policy<UInt8>.Count(Cardinal(16))
         )
+    }
+}
+
+extension `Growth.Policy Tests`.Unit {
+    @Test
+    func `rational factor scales counts exactly and floors at one`() throws {
+        let policy = Growth.Policy<UInt8>.factor(try .init(numerator: 3, denominator: 2))
+        #expect(policy.capacity(from: .init(Cardinal(4))) == .init(Cardinal(6)))
+        #expect(policy.capacity(from: .zero) == .one)
     }
 }

@@ -31,7 +31,7 @@ let package = Package(
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-atoms/swift-affine.git",
+            url: "https://github.com/swift-atoms/swift-ratio.git",
             branch: "main"
         ),
         .package(
@@ -52,18 +52,14 @@ let package = Package(
             name: "Growth",
             dependencies: [
                 .product(name: "Index", package: "swift-index"),
-                .product(name: "Affine", package: "swift-affine"),
-                .product(name: "Affine Discrete", package: "swift-affine"),
-                .product(name: "Affine Tagged", package: "swift-affine"),
+                .product(name: "Ratio", package: "swift-ratio"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
-                .product(name: "Cardinal Carrier", package: "swift-cardinal"),
-                .product(name: "Cardinal Tagged", package: "swift-cardinal"),
                 .product(name: "Memory", package: "swift-memory"),
                 .product(
                     name: "Memory Standard Library Integration",
                     package: "swift-memory"
                 ),
-                .product(name: "Ordinal Protocol", package: "swift-ordinal"),
+                .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ]
         ),
@@ -78,6 +74,7 @@ let package = Package(
         .testTarget(
             name: "Growth Tests",
             dependencies: [
+                .product(name: "Ratio", package: "swift-ratio"),
                 .target(name: "Growth"),
                 .target(name: "Growth Test Support"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
