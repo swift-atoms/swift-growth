@@ -1,4 +1,3 @@
-# .github/metadata.yaml
 description: "Pluggable capacity-growth strategies for owned, resizable regions and buffers."
 topics:
   - primitives
