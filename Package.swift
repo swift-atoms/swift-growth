@@ -17,7 +17,11 @@ let package = Package(
         .library(name: "Growth Foundation Integration", targets: ["Growth Foundation Integration"]),
         .library(name: "Growth Test Support", targets: ["Growth Test Support"]),
     ],
+    traits: [
+        .trait(name: "Memory", description: "Memory integration"),
+    ],
     dependencies: [
+        .package(url: "https://github.com/swift-atoms/swift-memory.git", branch: "main"),
         .package(
             url: "https://github.com/swift-atoms/swift-cardinal.git",
             branch: "main"
@@ -32,16 +36,24 @@ let package = Package(
         ),
     ],
     targets: [
+        .testTarget(
+            name: "Absorbed swift-growth-memory Tests",
+            dependencies: [
+                .target(name: "Growth", condition: .when(traits: ["Memory"])),
+            ],
+            path: "Tests/Absorbed swift-growth-memory Tests"
+        ),
         .target(
             name: "Growth",
             dependencies: [
+                .product(name: "Memory", package: "swift-memory", condition: .when(traits: ["Memory"])),
                 .product(name: "Ratio", package: "swift-ratio"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ],
             path: "Sources/Growth"
         ),
-        
+
         .target(
             name: "Growth Foundation Integration",
             dependencies: [
@@ -68,6 +80,12 @@ let package = Package(
             ],
             path: "Tests/Growth Tests"
         ),
+        .testTarget(name: "Growth Checked Factor Migration Tests", dependencies: [
+            .target(name: "Growth"),
+            .product(name: "Ratio", package: "swift-ratio"),
+            .product(name: "Cardinal", package: "swift-cardinal"),
+            .product(name: "Tagged", package: "swift-tagged"),
+        ], path: "Tests/Growth Checked Factor Migration Tests"),
     ],
     swiftLanguageModes: [.v6]
 )
