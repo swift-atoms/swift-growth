@@ -5,8 +5,6 @@ public import Tagged
 extension Growth {
 
     public struct Policy<Element: ~Copyable>: Sendable {
-        public typealias Count = Tagged::Tagged<Element, Cardinal::Cardinal>
-
         @usableFromInline
         let _apply: @Sendable (Count) throws(Error) -> Count
 
@@ -69,4 +67,8 @@ extension Growth.Policy where Element: ~Copyable {
     public static var exact: Self {
         Self { $0 }
     }
+}
+
+extension Growth.Policy where Element: ~Copyable {
+    public typealias Count = Tagged::Tagged<Element, Cardinal::Cardinal>
 }

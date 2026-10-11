@@ -1,7 +1,7 @@
 public import Ratio
 
 extension Growth.Policy where Element: ~Copyable {
-    public enum Error: Swift.Error, Sendable, Hashable {
+    public enum Error: Swift::Error, Sendable, Hashable {
         case overflow
         case invalidFactor(Ratio<Element, Element>)
         case scaling(Ratio<Element, Element>.Error)
