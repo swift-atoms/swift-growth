@@ -1,6 +1,6 @@
+import Cardinal
 import Growth
 import Ratio
-import Cardinal
 import Tagged
 import Testing
 

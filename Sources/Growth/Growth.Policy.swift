@@ -1,5 +1,5 @@
-public import Ratio
 public import Cardinal
+public import Ratio
 public import Tagged
 
 extension Growth {

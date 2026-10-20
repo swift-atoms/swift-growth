@@ -18,7 +18,7 @@ let package = Package(
         .library(name: "Growth Test Support", targets: ["Growth Test Support"]),
     ],
     traits: [
-        .trait(name: "Memory", description: "Memory integration"),
+        .trait(name: "Memory", description: "Memory integration")
     ],
     dependencies: [
         .package(url: "https://github.com/swift-atoms/swift-memory.git", branch: "main"),
@@ -39,7 +39,7 @@ let package = Package(
         .testTarget(
             name: "Absorbed swift-growth-memory Tests",
             dependencies: [
-                .target(name: "Growth", condition: .when(traits: ["Memory"])),
+                .target(name: "Growth", condition: .when(traits: ["Memory"]))
             ],
             path: "Tests/Absorbed swift-growth-memory Tests"
         ),
@@ -57,14 +57,14 @@ let package = Package(
         .target(
             name: "Growth Foundation Integration",
             dependencies: [
-                .target(name: "Growth"),
+                .target(name: "Growth")
             ],
             path: "Sources/Growth Foundation Integration"
         ),
         .target(
             name: "Growth Test Support",
             dependencies: [
-                .target(name: "Growth"),
+                .target(name: "Growth")
             ],
             path: "Tests/Support"
         ),
@@ -79,25 +79,30 @@ let package = Package(
             ],
             path: "Tests/Growth Tests"
         ),
-        .testTarget(name: "Growth Checked Factor Migration Tests", dependencies: [
-            .target(name: "Growth"),
-            .product(name: "Ratio", package: "swift-ratio"),
-            .product(name: "Cardinal", package: "swift-cardinal"),
-            .product(name: "Tagged", package: "swift-tagged"),
-        ], path: "Tests/Growth Checked Factor Migration Tests"),
+        .testTarget(
+            name: "Growth Checked Factor Migration Tests",
+            dependencies: [
+                .target(name: "Growth"),
+                .product(name: "Ratio", package: "swift-ratio"),
+                .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Tagged", package: "swift-tagged"),
+            ],
+            path: "Tests/Growth Checked Factor Migration Tests"
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    target.swiftSettings = (target.swiftSettings ?? []) + [
-        .strictMemorySafety(),
-        .enableUpcomingFeature("ExistentialAny"),
-        .enableUpcomingFeature("InternalImportsByDefault"),
-        .enableUpcomingFeature("MemberImportVisibility"),
-        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableUpcomingFeature("InferIsolatedConformances"),
-        .enableExperimentalFeature("Lifetimes"),
-        .treatAllWarnings(as: .error),
-    ]
+    target.swiftSettings =
+        (target.swiftSettings ?? []) + [
+            .strictMemorySafety(),
+            .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("MemberImportVisibility"),
+            .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+            .enableUpcomingFeature("InferIsolatedConformances"),
+            .enableExperimentalFeature("Lifetimes"),
+            .treatAllWarnings(as: .error),
+        ]
 }
