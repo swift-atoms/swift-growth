@@ -103,7 +103,7 @@ struct `Growth policies preserve capacity and report failure` {
     @Test
     func `custom nonshrinking policies support noncopyable element domains`() throws {
         struct Element: ~Copyable {}
-        let policy = Growth.Policy<Element>.custom { $0 }
+        let policy = Growth.Policy<Element>.custom { current throws(Growth.Policy<Element>.Error) in current }
         let capacity = try policy.capacity(from: 17)
         #expect(capacity == 17)
     }
