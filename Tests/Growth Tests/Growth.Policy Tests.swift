@@ -82,7 +82,7 @@ struct `Growth policies preserve capacity and report failure` {
 
     @Test
     func `custom proposals cannot shrink the current capacity`() throws {
-        let policy = Policy.custom { _ in .one }
+        let policy = Policy.custom { _ throws(Policy.Error) in .one }
         #expect(throws: Policy.Error.wouldShrink(current: 8, proposed: 1)) {
             _ = try policy.capacity(from: 8)
         }
