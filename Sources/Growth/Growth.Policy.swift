@@ -65,7 +65,7 @@ extension Growth.Policy where Element: ~Copyable {
 
     @inlinable
     public static var exact: Self {
-        Self { $0 }
+        Self { current throws(Error) in current }
     }
 }
 
